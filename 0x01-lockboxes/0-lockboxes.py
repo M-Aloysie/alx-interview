@@ -1,17 +1,32 @@
+#!/usr/bin/python3
+"""
+    python script that contains the function canUnlockAll
+"""
+
+
 def canUnlockAll(boxes):
-    if not boxes:
-        return True
-    
-    n = len(boxes)
-    visited = [False] * n
-    stack = [0]  # Start with the first box (index 0)
+    """
+        method that determines if all the boxes can be opened
+    """
 
-    while stack:
-        box_index = stack.pop()
-        visited[box_index] = True
+    if boxes is None or len(boxes) == 0:
+        return False
 
-        for key in boxes[box_index]:
-            if not visited[key]:
-                stack.append(key)
+    status = ["T"]
 
-    return all(visited)
+    for box in range(1, len(boxes)):
+        status.append("F")
+
+    for box in range(0, len(boxes)):
+        if (status[box] == "T" or box == 0):
+            for key in boxes[box]:
+                if int(key) < len(boxes) and status[key] == "F":
+                    for k in boxes[key]:
+                        if k < len(boxes):
+                            status[k] = "T"
+                if key < len(boxes):
+                    status[key] = "T"
+
+    if "F" in status:
+        return False
+    return True
